@@ -11,14 +11,16 @@ class FSDGenerator {
         this.config = config;
     }
     async generateLayer(options) {
-        const { path: basePath, layer, name, segments = [] } = options;
+        const { path: basePath, layer, name, segments } = options;
         if (!layer || !utils_1.Validation.isValidLayerType(layer)) {
             throw new Error(`Invalid layer type: ${layer}`);
         }
         const layerPath = path_1.default.join(basePath, layer, name);
         await utils_1.FileSystem.createDirectory(layerPath);
         utils_1.Logger.info(`Creating ${layer} layer: ${name}`);
-        for (const segment of segments) {
+        // Use default segments from config if not provided
+        const layerSegments = segments || this.config.layers[layer]?.segments || [];
+        for (const segment of layerSegments) {
             if (!utils_1.Validation.isValidSegmentType(segment)) {
                 utils_1.Logger.warn(`Skipping invalid segment type: ${segment}`);
                 continue;
@@ -67,8 +69,8 @@ class FSDGenerator {
         };
         return defaultTemplates[segment] || {};
     }
-    async createIndexFile(basePath, name) {
-        const indexPath = path_1.default.join(basePath, 'index.ts');
+    async createIndexFile(layerPath, name) {
+        const indexPath = path_1.default.join(layerPath, 'index.ts');
         const content = utils_1.Templates.processTemplate(utils_1.Templates.getDefaultTemplate('index'), { name });
         await utils_1.FileSystem.createFile(indexPath, content);
     }

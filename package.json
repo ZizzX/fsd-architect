@@ -1,10 +1,10 @@
 {
-  "name": "fsd-project-generator",
-  "version": "0.1.0",
-  "description": "CLI tool for generating Feature-Sliced Design (FSD) project structures",
+  "name": "fsd-architect",
+  "version": "0.2.0",
+  "description": "A professional CLI tool for architecting Feature-Sliced Design (FSD) project structures",
   "main": "dist/index.js",
   "bin": {
-    "fsd-gen": "./dist/cli.js"
+    "fsd-architect": "./dist/cli.js"
   },
   "scripts": {
     "build": "tsc",

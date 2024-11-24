@@ -21,7 +21,7 @@ function setupCommands(program) {
             const projectConfig = {
                 root: process.cwd(),
                 srcDir: 'src',
-                configFile: options.configPath || 'fsd.config.json'
+                configFile: options.configPath || 'fsd.config.json',
             };
             const config = await (0, prompts_1.promptForProjectInit)();
             await core_1.ConfigManager.saveConfig(config, projectConfig);
@@ -30,7 +30,7 @@ function setupCommands(program) {
                 path: projectConfig.srcDir,
                 layer: 'app',
                 name: 'app',
-                segments: ['config']
+                segments: ['config'],
             });
             utils_1.Logger.success('Project initialized successfully!');
         }
@@ -52,7 +52,7 @@ function setupCommands(program) {
             const projectConfig = {
                 root: process.cwd(),
                 srcDir: 'src',
-                configFile: options.configPath || 'fsd.config.json'
+                configFile: options.configPath || 'fsd.config.json',
             };
             const config = await core_1.ConfigManager.loadConfig(projectConfig);
             const generator = new core_1.FSDGenerator(config);

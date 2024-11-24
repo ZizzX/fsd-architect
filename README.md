@@ -1,10 +1,10 @@
-# FSD Create
+# FSD Architect
 
-[![CI](https://github.com/ZizzX/fsd-project-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/ZizzX/fsd-project-generator/actions/workflows/ci.yml)
-[![npm version](https://badge.fury.io/js/fsd-create.svg)](https://badge.fury.io/js/fsd-create)
+[![CI](https://github.com/ZizzX/fsd-architect/actions/workflows/ci.yml/badge.svg)](https://github.com/ZizzX/fsd-architect/actions/workflows/ci.yml)
+[![npm version](https://badge.fury.io/js/fsd-architect.svg)](https://badge.fury.io/js/fsd-architect)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-CLI tool for generating Feature-Sliced Design (FSD) project structures.
+A professional CLI tool for architecting Feature-Sliced Design (FSD) project structures.
 
 ## Features
 
@@ -20,20 +20,20 @@ CLI tool for generating Feature-Sliced Design (FSD) project structures.
 
 ```bash
 # Global installation
-npm install -g fsd-create
+npm install -g fsd-architect
 
 # Local installation
-npm install --save-dev fsd-create
+npm install --save-dev fsd-architect
 ```
 
 ## Quick Start
 
 ```bash
 # Initialize new FSD project
-fsd-create init my-project
+fsd-architect init my-project
 
 # Create new feature
-fsd-create create layer --layer features --name auth
+fsd-architect create layer --layer features --name auth
 ```
 
 ## Configuration
@@ -64,7 +64,7 @@ Create `fsd.config.json` in your project root:
 Initialize a new FSD project:
 
 ```bash
-fsd-create init [options]
+fsd-architect init [options]
 
 Options:
   -c, --config <path>  Path to config file (default: "fsd.config.json")
@@ -77,7 +77,7 @@ Options:
 Create new layer or segment:
 
 ```bash
-fsd-create create <type> [options]
+fsd-architect create <type> [options]
 
 Arguments:
   type                 Type of structure to create (layer/segment)

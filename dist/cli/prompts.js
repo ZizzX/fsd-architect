@@ -11,29 +11,32 @@ async function promptForProjectInit() {
         {
             type: 'input',
             name: 'projectName',
-            message: 'Project name:',
-            validate: (input) => input.length > 0 || 'Project name is required'
+            message: 'Enter project name:',
+            validate: (input) => {
+                if (!input.trim()) {
+                    return 'Project name is required';
+                }
+                return true;
+            },
         },
         {
             type: 'confirm',
             name: 'typescript',
             message: 'Use TypeScript?',
-            default: true
+            default: true,
         },
         {
             type: 'list',
             name: 'styling',
-            message: 'Select styling solution:',
-            choices: ['css', 'scss', 'less', 'styled-components'],
-            default: 'scss'
+            message: 'Choose styling approach:',
+            choices: ['scss', 'css', 'less', 'styled-components'],
         },
         {
             type: 'list',
             name: 'stateManager',
-            message: 'Select state management solution:',
+            message: 'Choose state management:',
             choices: ['redux', 'mobx', 'zustand', 'none'],
-            default: 'redux'
-        }
+        },
     ]);
     return {
         projectName: answers.projectName,
@@ -41,51 +44,49 @@ async function promptForProjectInit() {
         stack: {
             styling: answers.styling,
             stateManager: answers.stateManager,
-            testing: 'jest'
+            testing: 'jest', // По умолчанию используем Jest
         },
         templates: {},
-        layers: {
-            app: { segments: ['config'] },
-            pages: { segments: ['ui', 'model'] },
-            widgets: { segments: ['ui', 'model'] },
-            features: { segments: ['ui', 'model', 'api'] },
-            entities: { segments: ['ui', 'model', 'api'] },
-            shared: { segments: ['ui', 'lib', 'config'] }
-        }
+        layers: {},
     };
 }
 async function promptForLayerCreation(config) {
-    const validLayers = ['pages', 'widgets', 'features', 'entities', 'shared'];
     const answers = await inquirer_1.default.prompt([
         {
             type: 'list',
             name: 'layer',
-            message: 'Select layer:',
-            choices: validLayers
+            message: 'Choose layer type:',
+            choices: ['features', 'entities', 'shared', 'widgets'],
         },
         {
             type: 'input',
             name: 'name',
-            message: 'Enter name:',
-            validate: (input) => input.length > 0 || 'Name is required'
+            message: 'Enter layer name:',
+            validate: (input) => {
+                if (!input.trim()) {
+                    return 'Layer name is required';
+                }
+                return true;
+            },
+        },
+        {
+            type: 'input',
+            name: 'path',
+            message: 'Enter layer path:',
+            default: 'src',
         },
         {
             type: 'checkbox',
             name: 'segments',
-            message: 'Select segments:',
-            choices: (answers) => {
-                const layerConfig = config.layers[answers.layer];
-                return {
-                    ...answers,
-                    segments: layerConfig
-                };
-            }
-        }
+            message: 'Select layer segments:',
+            choices: ['ui', 'model', 'api', 'lib'],
+        },
     ]);
     return {
-        path: 'src',
         layer: answers.layer,
         name: answers.name,
-        segments: answers.segments
+        path: answers.path,
+        segments: answers.segments,
+        config,
     };
 }

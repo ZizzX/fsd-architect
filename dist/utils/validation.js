@@ -20,7 +20,7 @@ class Validation {
                 if (!this.isValidLayerType(layer)) {
                     errors.push(`Invalid layer type: ${layer}`);
                 }
-                layerConfig.segments?.forEach(segment => {
+                layerConfig.segments?.forEach((segment) => {
                     if (!this.isValidSegmentType(segment)) {
                         errors.push(`Invalid segment type: ${segment} in layer ${layer}`);
                     }
