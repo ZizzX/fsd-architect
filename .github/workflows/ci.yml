@@ -36,7 +36,7 @@ jobs:
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3
-        if: ${{ secrets.CODECOV_TOKEN != '' }}
+        if: github.repository == 'ZizzX/fsd-architect'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/lcov.info
@@ -54,7 +54,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '20.x'
           cache: 'npm'
 
       - name: Install dependencies

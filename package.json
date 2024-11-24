@@ -29,7 +29,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZizzX/fsd-project-generator.git"
+    "url": "https://github.com/ZizzX/fsd-architect.git"
   },
   "dependencies": {
     "chalk": "^4.1.2",
