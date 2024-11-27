@@ -28,7 +28,8 @@ export interface {{name}}State {
 export const initial{{name}}State: {{name}}State = {
   // initial state
 };`,
-      index: `export * from './{{name}}';`,
+      index: `// Public API
+export * from '.';`,
     };
 
     return templates[type] || '';
