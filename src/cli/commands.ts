@@ -46,7 +46,7 @@ export function setupCommands(program: Command): void {
           await generator.generateLayer({
             path: projectConfig.srcDir,
             layer,
-            name: '',
+            name: layer === 'app' ? 'app' : '',
             segments: layer === 'app' ? ['config'] : [],
           });
         }
