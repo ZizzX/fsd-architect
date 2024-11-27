@@ -1,9 +1,9 @@
 import { FSDConfig, LayerType, SegmentType } from '../types';
 
 export class Validation {
-  static isValidLayerType(layer: string): layer is LayerType {
+  static isValidLayerType(layer: unknown): layer is LayerType {
     const validLayers: LayerType[] = ['app', 'processes', 'pages', 'widgets', 'features', 'entities', 'shared'];
-    return validLayers.includes(layer as LayerType);
+    return typeof layer === 'string' && validLayers.includes(layer as LayerType);
   }
 
   static isValidSegmentType(segment: string): segment is SegmentType {

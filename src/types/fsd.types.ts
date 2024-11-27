@@ -35,7 +35,7 @@ export interface FSDConfig {
 
 export interface GeneratorOptions {
   path: string;
-  layer?: LayerType;
+  layer: LayerType;
   name: string;
   segments?: SegmentType[];
   config?: Partial<FSDConfig>;
