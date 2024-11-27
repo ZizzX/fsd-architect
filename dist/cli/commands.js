@@ -39,7 +39,7 @@ function setupCommands(program) {
                 await generator.generateLayer({
                     path: projectConfig.srcDir,
                     layer,
-                    name: layer,
+                    name: '',
                     segments: layer === 'app' ? ['config'] : [],
                 });
             }

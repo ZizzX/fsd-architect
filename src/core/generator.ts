@@ -21,9 +21,10 @@ export class FSDGenerator {
       throw new Error(`Invalid layer type: ${layer}`);
     }
 
-    const layerPath = path.join(basePath, layer, name);
+    // Если name пустое, используем только путь слоя
+    const layerPath = name ? path.join(basePath, layer, name) : path.join(basePath, layer);
     await this.createDirectory(layerPath);
-    Logger.info(`Creating ${layer} layer: ${name}`);
+    Logger.info(`Creating ${layer} layer${name ? ': ' + name : ''}`);
 
     // Use default segments from config if not provided
     const layerSegments = segments || this.config.layers[layer]?.segments || [];
@@ -34,12 +35,12 @@ export class FSDGenerator {
         continue;
       }
 
-      await this.generateSegment(layerPath, segment, name);
+      await this.generateSegment(layerPath, segment, name || layer);
     }
 
     // Create index file
-    await this.createIndexFile(layerPath, name);
-    Logger.success(`Successfully created ${layer} layer: ${name}`);
+    await this.createIndexFile(layerPath, name || layer);
+    Logger.success(`Successfully created ${layer} layer${name ? ': ' + name : ''}`);
   }
 
   private async generateSegment(basePath: string, segment: SegmentType, name: string): Promise<void> {
