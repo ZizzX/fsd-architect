@@ -5,12 +5,8 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.test.ts', '**/*.test.ts'],
   moduleFileExtensions: ['ts', 'js'],
   collectCoverage: true,
-  collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/types/**/*.ts',
-    '!src/**/*.d.ts'
-  ],
+  collectCoverageFrom: ['src/**/*.ts', '!src/types/**/*.ts', '!src/**/*.d.ts'],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],
-  verbose: true
-}
+  verbose: true,
+};
