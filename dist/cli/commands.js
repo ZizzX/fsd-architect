@@ -30,13 +30,23 @@ function setupCommands(program) {
             const config = await (0, prompts_1.promptForProjectInit)();
             await core_1.ConfigManager.saveConfig(config, projectConfig);
             const generator = new core_1.FSDGenerator(config);
-            await generator.generateLayer({
-                path: projectConfig.srcDir,
-                layer: 'app',
-                name: 'app',
-                segments: ['config'],
-            });
+            // Create src directory
+            await generator.createDirectory(projectConfig.srcDir);
+            utils_1.Logger.info('Creating project structure...');
+            // Create base FSD layers
+            const baseLayers = ['app', 'processes', 'pages', 'widgets', 'features', 'entities', 'shared'];
+            for (const layer of baseLayers) {
+                await generator.generateLayer({
+                    path: projectConfig.srcDir,
+                    layer,
+                    name: layer,
+                    segments: layer === 'app' ? ['config'] : [],
+                });
+            }
             utils_1.Logger.success('Project initialized successfully!');
+            utils_1.Logger.info('Created FSD structure:');
+            utils_1.Logger.info('src/');
+            baseLayers.forEach((layer) => utils_1.Logger.info(`  ├── ${layer}/`));
         }
         catch (error) {
             if (error instanceof Error) {

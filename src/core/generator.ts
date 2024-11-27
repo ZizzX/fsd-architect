@@ -9,6 +9,11 @@ export class FSDGenerator {
     this.config = config;
   }
 
+  async createDirectory(dirPath: string): Promise<void> {
+    await FileSystem.createDirectory(dirPath);
+    Logger.debug(`Created directory: ${dirPath}`);
+  }
+
   async generateLayer(options: GeneratorOptions): Promise<void> {
     const { path: basePath, layer, name, segments } = options;
 
@@ -17,7 +22,7 @@ export class FSDGenerator {
     }
 
     const layerPath = path.join(basePath, layer, name);
-    await FileSystem.createDirectory(layerPath);
+    await this.createDirectory(layerPath);
     Logger.info(`Creating ${layer} layer: ${name}`);
 
     // Use default segments from config if not provided
@@ -39,7 +44,7 @@ export class FSDGenerator {
 
   private async generateSegment(basePath: string, segment: SegmentType, name: string): Promise<void> {
     const segmentPath = path.join(basePath, segment);
-    await FileSystem.createDirectory(segmentPath);
+    await this.createDirectory(segmentPath);
 
     const templates = this.getTemplatesForSegment(segment);
     for (const [fileName, template] of Object.entries(templates)) {

@@ -10,13 +10,17 @@ class FSDGenerator {
     constructor(config) {
         this.config = config;
     }
+    async createDirectory(dirPath) {
+        await utils_1.FileSystem.createDirectory(dirPath);
+        utils_1.Logger.debug(`Created directory: ${dirPath}`);
+    }
     async generateLayer(options) {
         const { path: basePath, layer, name, segments } = options;
         if (!layer || !utils_1.Validation.isValidLayerType(layer)) {
             throw new Error(`Invalid layer type: ${layer}`);
         }
         const layerPath = path_1.default.join(basePath, layer, name);
-        await utils_1.FileSystem.createDirectory(layerPath);
+        await this.createDirectory(layerPath);
         utils_1.Logger.info(`Creating ${layer} layer: ${name}`);
         // Use default segments from config if not provided
         const layerSegments = segments || this.config.layers[layer]?.segments || [];
@@ -33,7 +37,7 @@ class FSDGenerator {
     }
     async generateSegment(basePath, segment, name) {
         const segmentPath = path_1.default.join(basePath, segment);
-        await utils_1.FileSystem.createDirectory(segmentPath);
+        await this.createDirectory(segmentPath);
         const templates = this.getTemplatesForSegment(segment);
         for (const [fileName, template] of Object.entries(templates)) {
             const filePath = path_1.default.join(segmentPath, `${fileName}.ts`);

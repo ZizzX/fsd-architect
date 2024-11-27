@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import { VERSION } from '../constants';
 import { ConfigManager, FSDGenerator } from '../core';
-import { CLIConfig, ProjectConfig } from '../types';
+import { CLIConfig, LayerType, ProjectConfig } from '../types';
 import { Logger } from '../utils';
 import { promptForLayerCreation, promptForProjectInit } from './prompts';
 
@@ -34,14 +34,27 @@ export function setupCommands(program: Command): void {
         await ConfigManager.saveConfig(config, projectConfig);
 
         const generator = new FSDGenerator(config);
-        await generator.generateLayer({
-          path: projectConfig.srcDir,
-          layer: 'app',
-          name: 'app',
-          segments: ['config'],
-        });
+
+        // Create src directory
+        await generator.createDirectory(projectConfig.srcDir);
+        Logger.info('Creating project structure...');
+
+        // Create base FSD layers
+        const baseLayers: LayerType[] = ['app', 'processes', 'pages', 'widgets', 'features', 'entities', 'shared'];
+
+        for (const layer of baseLayers) {
+          await generator.generateLayer({
+            path: projectConfig.srcDir,
+            layer,
+            name: layer,
+            segments: layer === 'app' ? ['config'] : [],
+          });
+        }
 
         Logger.success('Project initialized successfully!');
+        Logger.info('Created FSD structure:');
+        Logger.info('src/');
+        baseLayers.forEach((layer) => Logger.info(`  ├── ${layer}/`));
       } catch (error) {
         if (error instanceof Error) {
           Logger.error(error.message);
