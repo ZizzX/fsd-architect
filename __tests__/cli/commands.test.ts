@@ -38,7 +38,7 @@ describe('CLI Commands', () => {
     jest.clearAllMocks();
   });
 
-  it('should initialize project', async () => {
+  it('should initialize project with flat structure', async () => {
     (ConfigManager.saveConfig as jest.Mock).mockResolvedValue(undefined);
     const mockGenerateLayer = FSDGenerator.prototype.generateLayer as jest.Mock;
     mockGenerateLayer.mockResolvedValue(undefined);
@@ -46,14 +46,29 @@ describe('CLI Commands', () => {
     await program.parseAsync(['node', 'test', 'init']);
 
     expect(ConfigManager.saveConfig).toHaveBeenCalled();
+
+    // Проверяем создание слоя app без вложенной папки
     expect(mockGenerateLayer).toHaveBeenCalledWith(
       expect.objectContaining({
         layer: 'app',
-        name: 'app',
+        name: '',
         path: 'src',
         segments: ['config'],
       })
     );
+
+    // Проверяем создание других слоев без вложенных папок
+    ['processes', 'pages', 'widgets', 'features', 'entities', 'shared'].forEach((layer) => {
+      expect(mockGenerateLayer).toHaveBeenCalledWith(
+        expect.objectContaining({
+          layer,
+          name: '',
+          path: 'src',
+          segments: [],
+        })
+      );
+    });
+
     expect(Logger.success).toHaveBeenCalledWith('Project initialized successfully!');
   });
 
