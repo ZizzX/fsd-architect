@@ -5,10 +5,13 @@
 1. Fork the repository
 2. Clone your fork
 3. Install dependencies:
+
    ```bash
    npm install
    ```
+
 4. Create a feature branch:
+
    ```bash
    git checkout -b feature/amazing-feature
    ```
@@ -18,16 +21,32 @@
 1. Make your changes
 2. Add tests for new functionality
 3. Ensure all tests pass:
+
    ```bash
    npm test
    ```
+
 4. Lint your code:
+
    ```bash
    npm run lint
    ```
+
 5. Build the project:
+
    ```bash
    npm run build
+   ```
+
+6. Test CLI commands locally:
+
+   ```bash
+   # Link package locally
+   npm link
+
+   # Test using either short or full command
+   fsd --help
+   fsd-architect --help
    ```
 
 ## Commit Guidelines
@@ -43,6 +62,7 @@ type(scope): description
 ```
 
 Types:
+
 - feat: New feature
 - fix: Bug fix
 - docs: Documentation changes
@@ -52,6 +72,7 @@ Types:
 - chore: Maintenance
 
 Example:
+
 ```
 feat(generator): add support for custom templates
 

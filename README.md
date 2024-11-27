@@ -28,11 +28,19 @@ npm install --save-dev fsd-architect
 
 ## Quick Start
 
+You can use either the full command `fsd-architect` or the shorter alias `fsd`:
+
 ```bash
-# Initialize new FSD project
+# Initialize new FSD project (using short command)
+fsd init my-project
+
+# Or using full command
 fsd-architect init my-project
 
-# Create new feature
+# Create new feature (using short command)
+fsd create layer --layer features --name auth
+
+# Or using full command
 fsd-architect create layer --layer features --name auth
 ```
 
