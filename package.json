@@ -1,6 +1,6 @@
 {
   "name": "fsd-architect",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A professional CLI tool for architecting Feature-Sliced Design (FSD) project structures",
   "main": "dist/cli/index.js",
   "bin": {
