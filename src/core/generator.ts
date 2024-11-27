@@ -1,5 +1,5 @@
 import path from 'path';
-import { FSDConfig, GeneratorOptions, SegmentType } from '../types';
+import { FSDConfig, GeneratorOptions, LayerType, SegmentType } from '../types';
 import { FileSystem, Logger, Templates, Validation } from '../utils';
 
 export class FSDGenerator {
@@ -14,19 +14,20 @@ export class FSDGenerator {
     Logger.debug(`Created directory: ${dirPath}`);
   }
 
-  async generateLayer(options: GeneratorOptions): Promise<void> {
-    const { path: basePath, layer, name, segments } = options;
+  private getLayerPath(basePath: string, layer: LayerType, name: string): string {
+    return name ? path.join(basePath, layer, name) : path.join(basePath, layer);
+  }
 
+  private validateLayer(layer: LayerType | undefined): void {
     if (!layer || !Validation.isValidLayerType(layer)) {
       throw new Error(`Invalid layer type: ${layer}`);
     }
+  }
 
-    // Если name пустое, используем только путь слоя
-    const layerPath = name ? path.join(basePath, layer, name) : path.join(basePath, layer);
-    await this.createDirectory(layerPath);
-    Logger.info(`Creating ${layer} layer${name ? ': ' + name : ''}`);
+  private async processSegments(layerPath: string, layer: LayerType, name: string, segments?: string[]): Promise<void> {
+    // Используем слой только после валидации
+    this.validateLayer(layer);
 
-    // Use default segments from config if not provided
     const layerSegments = segments || this.config.layers[layer]?.segments || [];
 
     for (const segment of layerSegments) {
@@ -37,9 +38,22 @@ export class FSDGenerator {
 
       await this.generateSegment(layerPath, segment, name || layer);
     }
+  }
 
-    // Create index file
+  async generateLayer(options: GeneratorOptions): Promise<void> {
+    const { path: basePath, layer, name, segments } = options;
+
+    // Валидируем слой перед использованием
+    this.validateLayer(layer);
+
+    const layerPath = this.getLayerPath(basePath, layer, name);
+    await this.createDirectory(layerPath);
+
+    Logger.info(`Creating ${layer} layer${name ? ': ' + name : ''}`);
+
+    await this.processSegments(layerPath, layer, name, segments);
     await this.createIndexFile(layerPath, name || layer);
+
     Logger.success(`Successfully created ${layer} layer${name ? ': ' + name : ''}`);
   }
 

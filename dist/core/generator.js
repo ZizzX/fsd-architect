@@ -14,16 +14,17 @@ class FSDGenerator {
         await utils_1.FileSystem.createDirectory(dirPath);
         utils_1.Logger.debug(`Created directory: ${dirPath}`);
     }
-    async generateLayer(options) {
-        const { path: basePath, layer, name, segments } = options;
+    getLayerPath(basePath, layer, name) {
+        return name ? path_1.default.join(basePath, layer, name) : path_1.default.join(basePath, layer);
+    }
+    validateLayer(layer) {
         if (!layer || !utils_1.Validation.isValidLayerType(layer)) {
             throw new Error(`Invalid layer type: ${layer}`);
         }
-        // Если name пустое, используем только путь слоя
-        const layerPath = name ? path_1.default.join(basePath, layer, name) : path_1.default.join(basePath, layer);
-        await this.createDirectory(layerPath);
-        utils_1.Logger.info(`Creating ${layer} layer${name ? ': ' + name : ''}`);
-        // Use default segments from config if not provided
+    }
+    async processSegments(layerPath, layer, name, segments) {
+        // Используем слой только после валидации
+        this.validateLayer(layer);
         const layerSegments = segments || this.config.layers[layer]?.segments || [];
         for (const segment of layerSegments) {
             if (!utils_1.Validation.isValidSegmentType(segment)) {
@@ -32,7 +33,15 @@ class FSDGenerator {
             }
             await this.generateSegment(layerPath, segment, name || layer);
         }
-        // Create index file
+    }
+    async generateLayer(options) {
+        const { path: basePath, layer, name, segments } = options;
+        // Валидируем слой перед использованием
+        this.validateLayer(layer);
+        const layerPath = this.getLayerPath(basePath, layer, name);
+        await this.createDirectory(layerPath);
+        utils_1.Logger.info(`Creating ${layer} layer${name ? ': ' + name : ''}`);
+        await this.processSegments(layerPath, layer, name, segments);
         await this.createIndexFile(layerPath, name || layer);
         utils_1.Logger.success(`Successfully created ${layer} layer${name ? ': ' + name : ''}`);
     }

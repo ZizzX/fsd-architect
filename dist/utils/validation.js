@@ -4,7 +4,7 @@ exports.Validation = void 0;
 class Validation {
     static isValidLayerType(layer) {
         const validLayers = ['app', 'processes', 'pages', 'widgets', 'features', 'entities', 'shared'];
-        return validLayers.includes(layer);
+        return typeof layer === 'string' && validLayers.includes(layer);
     }
     static isValidSegmentType(segment) {
         const validSegments = ['ui', 'model', 'api', 'lib', 'config'];
