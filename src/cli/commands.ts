@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { VERSION } from '../constants';
 import { ConfigManager, FSDGenerator } from '../core';
 import { CLIConfig, ProjectConfig } from '../types';
 import { Logger } from '../utils';
@@ -6,9 +7,9 @@ import { promptForLayerCreation, promptForProjectInit } from './prompts';
 
 export function setupCommands(program: Command): void {
   program
-    .name('fsd-create')
+    .name('fsd-architect')
     .description('CLI tool for generating Feature-Sliced Design project structure')
-    .version('0.1.0');
+    .version(VERSION);
 
   program
     .command('init')

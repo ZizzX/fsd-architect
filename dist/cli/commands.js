@@ -6,7 +6,7 @@ const utils_1 = require("../utils");
 const prompts_1 = require("./prompts");
 function setupCommands(program) {
     program
-        .name('fsd-create')
+        .name('fsd-architect')
         .description('CLI tool for generating Feature-Sliced Design project structure')
         .version('0.1.0');
     program
